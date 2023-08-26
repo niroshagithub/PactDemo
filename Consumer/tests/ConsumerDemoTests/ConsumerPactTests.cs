@@ -57,7 +57,7 @@ public class ConsumerPactTests
     public async Task ItHandles404Response()
     {
         // Arrange
-        _pactBuilder.UponReceiving("A request to get weather forecasts")
+        _pactBuilder.UponReceiving("A GET request to get weather forecasts")
             .Given("weather forecasts doesn't exist")
             .WithRequest(HttpMethod.Get, "/weatherforecast")
             .WillRespond()
