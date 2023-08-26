@@ -1,7 +1,6 @@
 using System.Reflection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ProviderDemo;
@@ -21,8 +20,8 @@ public class TestStartup
     public void ConfigureServices(IServiceCollection services)
     {
         services.AddMvc().AddApplicationPart(Assembly.GetAssembly(typeof(Startup))!);
-        services.AddSingleton<IWeatherForecastRepository, FakeWeatherForecastRepository>();
         _inner.ConfigureServices(services);
+        services.AddScoped<IWeatherForecastRepository, FakeWeatherForecastRepository>();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

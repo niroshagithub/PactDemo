@@ -28,7 +28,7 @@ public class ConsumerPactTests
         // Arrange
         var weatherForecasts = new List<object>()
         {
-            new { date = DateTime.Parse("2023-01-01"), temperatureC = "32", summary = "Sunny" }
+            new { date = DateTime.Parse("2023-01-01"), temperatureC = 32, summary = "Sunny" }
         };
         _pactBuilder.UponReceiving("A GET request to get weather forecasts")
                         .Given("weather forecasts exist")

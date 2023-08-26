@@ -18,7 +18,7 @@ public class Startup
     public void ConfigureServices(IServiceCollection services)
     {
         services.AddRouting(options => options.LowercaseUrls = true);
-        services.AddSingleton<IWeatherForecastRepository, WeatherForecastRepository>();
+        services.AddScoped<IWeatherForecastRepository, WeatherForecastRepository>();
 
         services.AddControllers()
             .AddJsonOptions(options =>
