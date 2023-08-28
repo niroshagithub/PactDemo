@@ -1,7 +1,10 @@
+using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.OpenApi.Models;
 using ProviderDemo.Repositories;
+
+using Swashbuckle.AspNetCore.Filters;
 
 namespace ProviderDemo;
 
@@ -31,7 +34,9 @@ public class Startup
         services.AddSwaggerGen(c =>
         {
             c.SwaggerDoc("v1", new OpenApiInfo { Title = "Provider", Version = "v1" });
+            c.ExampleFilters();
         });
+        services.AddSwaggerExamplesFromAssemblies(Assembly.GetEntryAssembly());
         
     }
 
