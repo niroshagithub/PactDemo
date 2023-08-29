@@ -8,11 +8,48 @@ if (-not $PactBrokerBaseUrl -or -not $PactBrokerToken) {
 
 $providerName = "WeatherForecast API"
 $version = ${env:PROVIDER_API_VERSION}
+$branch = ${env:PROVIDER_API_BRANCH}
 $openApiFile = ".\WeatherForecastProviderApi.json"
-$pactUri = "$pactBrokerBaseUrl/pacticipants/$providerName/versions/$version/pacts"
-$headers = @{
-    "Authorization" = "Bearer $pactBrokerToken"
-    "Content-Type" = "application/json"
-}
-Write-Host $pactUri
-Invoke-RestMethod -Uri $pactUri -Method PUT -Headers $headers -InFile $openApiFile
+$BRANCH=$(git rev-parse --abbrev-ref HEAD)
+$OAS_PATH=$openApiFile
+$REPORT_PATH="report.txt"
+$REPORT_FILE_CONTENT_TYPE="text/plain"
+$VERIFIER_TOOL="schemathesis"
+$PWD = (Get-Location).Path
+$dockerPath = $PWD -replace '\\', '/' -replace ':', ''
+
+$dockerCommand = @"
+docker run --rm -v /${dockerPath}:/${dockerPath} -w /${dockerPath} `
+    -e $pactBrokerBaseUrl `
+    -e $pactBrokerToken `
+    pactfoundation/pact-cli:0.50.0.28 `
+    pactflow publish-provider-contract $OAS_PATH `
+    --provider $providerName `
+    --provider-app-version $version `
+    --branch $branch `
+    --content-type application/json `
+    --verification-exit-code 0 `
+    --verification-results $REPORT_PATH `
+    --verification-results-content-type $REPORT_FILE_CONTENT_TYPE `
+    --verifier $VERIFIER_TOOL
+    --broker-token=$pactBrokerToken
+    --broker-base-url=$pactBrokerBaseUrl
+"@
+
+Write-Host $dockerCommand
+
+docker run --rm -v /${dockerPath}:/${dockerPath} -w /${dockerPath} `
+    -e $pactBrokerBaseUrl `
+    -e $pactBrokerToken `
+    pactfoundation/pact-cli:0.50.0.28 `
+    pactflow publish-provider-contract $OAS_PATH `
+    --provider $providerName `
+    --provider-app-version $version `
+    --branch $branch `
+    --content-type application/json `
+    --verification-exit-code 0 `
+    --verification-results $REPORT_PATH `
+    --verification-results-content-type $REPORT_FILE_CONTENT_TYPE `
+    --verifier $VERIFIER_TOOL `
+    --broker-token=$pactBrokerToken `
+    --broker-base-url=$pactBrokerBaseUrl

@@ -15,7 +15,7 @@ public class ConsumerPactTests
     {
         var pact = Pact.V4("WeatherForecast Consumer", "WeatherForecast API", new PactConfig
         {
-            PactDir = $"{Directory.GetParent(Directory.GetCurrentDirectory())?.Parent?.Parent?.Parent?.Parent?.Parent?.FullName}{Path.DirectorySeparatorChar}pacts"
+            PactDir = $"{Directory.GetParent(Directory.GetCurrentDirectory())?.Parent?.Parent?.FullName}{Path.DirectorySeparatorChar}pacts"
         });
 
         // Initialize Rust backend

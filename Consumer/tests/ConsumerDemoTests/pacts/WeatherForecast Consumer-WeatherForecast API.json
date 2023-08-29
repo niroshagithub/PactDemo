@@ -1,0 +1,83 @@
+{
+  "consumer": {
+    "name": "WeatherForecast Consumer"
+  },
+  "interactions": [
+    {
+      "description": "A GET request to get weather forecasts",
+      "pending": false,
+      "providerStates": [
+        {
+          "name": "weather forecasts doesn't exist"
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "path": "/weatherforecast"
+      },
+      "response": {
+        "status": 404
+      },
+      "type": "Synchronous/HTTP"
+    },
+    {
+      "description": "A GET request to get weather forecasts",
+      "pending": false,
+      "providerStates": [
+        {
+          "name": "weather forecasts exist"
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "path": "/weatherforecast"
+      },
+      "response": {
+        "body": {
+          "content": [
+            {
+              "date": "2023-01-01T00:00:00",
+              "summary": "Sunny",
+              "temperatureC": 32
+            }
+          ],
+          "contentType": "application/json",
+          "encoded": false
+        },
+        "headers": {
+          "Content-Type": [
+            "application/json; charset=utf-8"
+          ]
+        },
+        "matchingRules": {
+          "body": {
+            "$": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type",
+                  "min": 1
+                }
+              ]
+            }
+          },
+          "header": {}
+        },
+        "status": 200
+      },
+      "type": "Synchronous/HTTP"
+    }
+  ],
+  "metadata": {
+    "pactRust": {
+      "ffi": "0.4.5",
+      "models": "1.1.2"
+    },
+    "pactSpecification": {
+      "version": "4.0"
+    }
+  },
+  "provider": {
+    "name": "WeatherForecast API"
+  }
+}
